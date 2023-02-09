@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+.wrapper {
+    @apply w-11/12 max-w-screen-lg mx-auto
+}
+
+.inner-wrapper {
+    @apply max-w-screen-md
+}
+
+/* Form */
+.form-input > * {
+    flex: 1 100px;
+}
+
+.input {
+    @apply border-gray-400 border-2 rounded-md p-2 hover:border-purple-800 focus:border-purple-800 active:border-purple-800 outline-none
+}
+
+.badge {
+    -webkit-text-stroke: 3px black;
+    @apply absolute inset-x-0 text-center inline-block uppercase py-2 px-4 font-bold font-archivo text-6xl bg-transparent text-white tracking-tighter
+}

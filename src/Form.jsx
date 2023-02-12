@@ -1,41 +1,45 @@
-import { useReducer, useState } from 'react';
-import data from './data.js';
-import Meme from './Meme.jsx'
+import { useState } from 'react';
+import memesData from './memesData.js';
+// import Meme from './Meme.jsx'
 
 const Form = () => {
-    /* Get random image index */ 
-    const randomIndex = Math.floor( Math.random() * data.data.memes.length )
-    const randomURL =data.data.memes[randomIndex].url
-
     /* New state for allMemegesImages*/ 
-    const [allMemegesImages, setAllMemesImages] = useState(data)
-
-    /* memeObj state */ 
-    const [memeObj, setMemeImg] = useState({
-        img: randomURL,
-        topText: '',
-        botText: ''
-    })
+    const [allMemegesImages, setAllMemesImages] = useState(memesData)
     
+    /* Get random image index */ 
+    const randomIndex = Math.floor( Math.random() * allMemegesImages.data.memes.length )
+    const randomURL = allMemegesImages.data.memes[randomIndex].url
+
+    // Form obj state
+    const [ formData, setFormData ] = useState({
+        topText: "",
+        botText: ""
+    })
+    // onChange handler for two form text inputs
+    function handleChange(event) {
+        setFormData(prevFormData => {
+            return {...prevFormData, [event.target.name]: event.target.value}
+        })
+    }
+    /* memeObj state */ 
+    const [memeImgURL, setMemeImgURL] = useState(randomURL)
+
     const handleSubmit = (event) => {
         /* Disable the default submit behavior of a form */ 
         event.preventDefault()
 
         /* Set new memeImg state with the newly acquired random index */ 
-        setMemeImg({
-            img: randomURL, 
-            topText: document.getElementById('top-text').value,
-            botText: document.getElementById('bot-text').value,
-        })
+        setMemeImgURL(randomURL)
     }
+    
 
 
     return (
         <div className="wrapper inner-wrapper my-8">
             <form onSubmit={handleSubmit} id="form">
                 <div className="form-input flex flex-wrap gap-2 my-4">
-                    <input className="input" type="text" id="top-text" name="top-text" placeholder="Top text"/>
-                    <input className="input" type="text" id="bot-text"  name="bot-text" placeholder="Bottom text" />
+                    <input className="input" type="text" onChange={handleChange} name="topText" value={formData.topText} placeholder="Top text"/>
+                    <input className="input" type="text" onChange={handleChange} name="botText" value={formData.botText} placeholder="Bottom text" />
                 </div>
                 <button className="bg-purple-500 text-white mb-8 w-full px-5 py-3 rounded-md">
                     <span>Get new meme image</span>
@@ -44,9 +48,14 @@ const Form = () => {
                     </svg>
                 </button>
             </form>
-            <Meme 
+            <div className="relative wrapper inner-wrapper border rounded-lg">
+                <span className="badge top-4">{formData.topText}</span>
+                <img className="w-full" src={memeImgURL} alt="random meme image" />
+                <span className="badge bottom-4">{formData.botText}</span>
+            </div>
+            {/* <Meme 
                 {...memeObj}
-                />
+                /> */}
         </div>
     )
 }
